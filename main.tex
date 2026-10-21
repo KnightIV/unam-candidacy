@@ -1,0 +1,96 @@
+\documentclass[12pt, oneside]{article}
+\usepackage{lmodern} %fuentes
+\usepackage[T1]{fontenc} %fuentes
+% \usepackage[spanish]{babel} %idoma
+\usepackage{caption, subcaption} %figuras
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage[width=155mm,top=25mm,bottom=25mm, headheight=15pt,]{geometry} %Tamaño de la Pagina
+\usepackage{indentfirst}
+
+\usepackage[style=apa,doi=false]{biblatex}
+\addbibresource{ref.bib}
+
+\usepackage{hyperref}
+    \hypersetup{breaklinks=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+
+% \title{Portada Maestría}
+% \author{Ramón Caballero Villegas}
+
+\begin{document}
+	\begin{titlepage}
+		\setlength{\parindent}{0pt} \setlength{\parskip}{0pt}
+	
+		\begin{center}
+			\vfill 
+			
+			\begin{minipage}{\textwidth}
+				
+				\newcolumntype{V}{>{\centering\arraybackslash} m{.17\textwidth} }
+				\newcolumntype{C}{>{\centering\arraybackslash} m{.56\textwidth} }
+				
+				\begin{center}
+					\includegraphics[width=4.5cm]{UNAM_LOGO2.png}	
+				\end{center} 	
+				\begin{center}
+					\huge{Universidad Nacional Aut\'onoma de M\'exico}
+				\end{center} 
+				
+			\end{minipage}
+				
+			\vfill
+			
+			% \begin{minipage}{0.7\textwidth}
+			% 	\begin{center}
+			% 		\huge Doctorado en Astrof\'isica
+			% 	\end{center}
+			% \end{minipage}
+			% 
+			\begin{center}
+				
+				% \vfill
+				%\medskip \rule{.9\textwidth}{2pt}
+				% \vfill
+				\Huge \textbf{OAN--SPM Catalog of Galactic Stellar Clusters}
+				%{\Large \bfseries  \title   }
+				
+				%\medskip \rule{.9\textwidth}{2pt}
+			\end{center}
+			
+			\begin{center}
+				\vspace*{1cm}
+				{\huge Doctoral Thesis Candidacy}\\
+				% \vspace*{1cm}
+				% que para optar por el grado de \\ \bigskip
+				% {\large {Maestro en Ingenier\'ia}} \\ \bigskip
+				
+				%PRESENTA:\\ \medskip
+				\begin{center}
+					\textbf{STUDENT}: \\
+					\large Ram\'on Caballero Villegas
+				\end{center}
+				
+				\bigskip
+				
+				\textbf{TUTOR}: \\
+				Dr. Ra\'ul Michel Murillo (IA--Ensenada) \\
+				Dr. Miguel \'Angel Arag\'on Calvo
+				%Coadvisors
+				%\emph{Coasesores:}
+				%\coadvisor1 \\ \coadvisor2 \\ \coadvisor3 
+			\end{center}
+			
+			\vfill
+			
+			\begin{center}
+				{Baja California, Ensenada. (November) 2026}\\
+			\end{center}
+			\cleardoublepage
+		\end{center}
+	\end{titlepage}
+
+	\include{candidatura}
+
+	\printbibliography
+
+\end{document}
