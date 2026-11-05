@@ -1,8 +1,9 @@
 \documentclass[12pt, oneside]{article}
 \usepackage{lmodern} %fuentes
 \usepackage[T1]{fontenc} %fuentes
-% \usepackage[spanish]{babel} %idoma
-\usepackage{caption, subcaption} %figuras
+% \usepackage[spanish]{babel} 
+\usepackage{caption, subcaption} 
+\usepackage{amssymb,amsmath,mathtools}
 \usepackage{graphicx}
 \usepackage{array}
 \usepackage[width=155mm,top=25mm,bottom=25mm, headheight=15pt,]{geometry} %Tamaño de la Pagina
@@ -14,8 +15,12 @@
 \usepackage{hyperref}
     \hypersetup{breaklinks=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
 
-% \title{Portada Maestría}
-% \author{Ramón Caballero Villegas}
+\renewcommand*{\finalnamedelim}{%
+        \addspace\&\addspace%
+}
+
+% \newcommand{\HuntReffertAbbr}{}
+\newcommand{\code}[1]{\texttt{#1}}
 
 \begin{document}
 	\begin{titlepage}
@@ -74,7 +79,7 @@
 				
 				\textbf{TUTOR}: \\
 				Dr. Ra\'ul Michel Murillo (IA--Ensenada) \\
-				Dr. Miguel \'Angel Arag\'on Calvo
+				Dr. Miguel \'Angel Arag\'on Calvo (IA--Ensenada)
 				%Coadvisors
 				%\emph{Coasesores:}
 				%\coadvisor1 \\ \coadvisor2 \\ \coadvisor3 
