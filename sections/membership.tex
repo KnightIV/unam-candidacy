@@ -31,7 +31,7 @@ The HDBSCAN data clusters are subsequently processed to find the cluster of inte
     D_c(H, L) = \frac{1}{|H| + |L|} \left\{\sum_{\vec{x} \in H} d(\vec{x}, \vec{c}_L) + \sum_{\vec{y} \in L} d(\vec{y}, \vec{c}_H) \right\}
 \end{equation}
 
-Where $H$ is the data cluster identified from the HDBSCAN pipeline, $L$ is the cluster composed of the members reported in the literature (taken from \cite{huntImprovingOpenCluster2024a} (henceforth HR24) when available, else from the UCC \autocite{perrenUnifiedClusterCatalogue2023}), $\vec{x}$ and $\vec{y}$ are the normalized 5D astrometric parameters of the members in clusters $H$ and $L$ respectively, the function $d$ returns the Euclidean distance between two points, and $\vec{c}_H$ and $\vec{c}_L$ are the center positions of clusters $H$ and $L$ respectively. The data cluster $H$ with the lowest $D_c$ to the literature cluster $L$ is taken as the new solution after visual inspection. 
+Where $H$ is the data cluster identified from the HDBSCAN pipeline, $L$ is the cluster composed of the members reported in the literature (taken from \cite{huntImprovingOpenCluster2024a} (henceforth HR24) when available, else from the UCC \autocite{perrenUnifiedClusterCatalogue2023}), $\vec{x}$ and $\vec{y}$ are the normalized 5D astrometric parameters of the members in clusters $H$ and $L$ respectively, the function $d$ returns the Euclidean distance between two points, and $\vec{c}_H$ and $\vec{c}_L$ are the center positions of clusters $H$ and $L$ respectively. The data cluster $H$ with the lowest $D_c$ to the literature cluster $L$ is taken as the new solution. 
 
 \begin{figure}[!ht]
     \centering
