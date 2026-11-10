@@ -1,0 +1,52 @@
+\section{Photometric Analysis}
+
+Using the membership list from the HDBSCAN pipeline, we performed a photometric analysis of each OC to determine their physical parameters: metallicity ($Z$; calculated using [Fe/H]), age ($\log{t}$), distance given as the distance modulus ($d_m$), visual extinction ($A_V$), and Galactic extinction curve ($R_V$). This was done using each cluster's computed Gaia CMDs as a first approximation and fitting PARSEC theoretical isochrones \autocite{bressanPARSECStellarTracks2012}, where the fit was done using two different approaches to explore the existing tooling available in the literature.
+
+\subsection{ASteCA}
+
+The \textit{Automated Stellar Cluster Analysis} (ASteCA) package \autocite{perrenASteCAAutomatedStellar2015b} is an open-source package for cluster analysis. ASteCA is organized into several modules for handling cluster membership probabilities, isochrone handling, synthetic cluster generation from theoretical isochrones, observation calibrations for comparing synthetic clusters with real observations, and likelihood calculations for comparing synthetic CMDs with a synthetic cluster's CMD. Since each clusters' stellar members were already determined from the HDBSCAN pipeline, we only made use of the \code{Synthetic} module to generate synthetic clusters calibrated on the Gaia member observations. 
+
+An \textit{approximate Bayesian computation} (ABC) combined with \textit{sequential Monte-Carlo} (ABC-SMC) approach was employed for parameter inference with ASteCA using the \code{pyABC} package \autocite{schaltePyABCEfficientRobust2022}. Unlike other methods of parameter inference, ABC-SMC does not depend on the evaluation of a likelihood function, but rather only on a measurement of a distance metric of the generated model (in this case, the synthetic cluster created from a parameter vector sampled from a given target distribution) and the observed data (the observational Gaia DR3 CMD from the member stars identified from the HDBSCAN pipeline), denoted as $\epsilon$. 
+
+In addition to the main intrinsic parameters that dictate the general shape of a theoretical isochrone, unresolved binary systems can have an impact on a cluster's CMD, appearing as an excessively red star and manifesting as a broadening of the cluster's main sequence \autocite{liModelingUnresolvedBinaries2020}. When generating a synthetic cluster, ASteCA generates binary systems with the given probability ($P_b(m_1)$) as a function of the primary's mass ($m_1$) with free parameters $\alpha$ and $\beta$:
+
+\begin{equation}
+    P_b(m_1) = \alpha + \beta \left(\frac{m_1}{1.4 + m_1}\right)
+\end{equation}
+
+\subsubsection{ABC Sampling}
+
+Parameter inference with \code{pyABC} was performed by sampling from a uniform distribution for all cluster intrinsic and extrinsic parameters. Parameter ranges can be seen in Table \ref{tab:pyabc-prior-ranges}. Although this imposes an initial restriction on the parameter space initially explored by \code{pyABC}, these are not hard limits, as proposal parameter vectors carry the sampler beyond the limits defined by the prior distributions \autocite{sissonSequentialMonteCarlo2007}.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{c c c}
+        \hline \hline
+        \thead{\textbf{Parameter}} & \thead{\textbf{Minimum}} & \thead{\textbf{Maximum}} \\
+        
+        \hline
+
+        $\log{t}$ & 7.0 & 9.5 \\
+        $Z$ & 0.005 & 0.0197 \\
+        $d_m$ & 7.0 & 10.5 \\
+        $A_V$ & 0.0 & 3.0 \\
+        $R_V$ & 2.0 & 4.0 \\
+        $\alpha$ & 0.0 & 0.2 \\
+        $\beta$ & 0.8 & 0.99 \\
+        $E(B - V)$ & 0 & 4.0 \\
+
+        \hline
+    \end{tabular}
+    \caption{Prior parameter sample ranges.}
+    \label{tab:pyabc-prior-ranges}
+\end{table}
+
+The logarithmic Poisson likelihood ratio (PLR) ($\log{p}$) defined within ASteCA is used as the distance metric for \code{pyABC}:
+
+\begin{equation}
+    \log{p} \approx \sum_{i}^{B} \left[\log{\Gamma \left(n_i + m_i + \frac{1}{2}\right)} - \log{\Gamma \left(m_i + \frac{1}{2} \right)} \right]
+\end{equation}
+
+The PLR is calculated on a 2D histogram of the Gaia DR3 CMD composed of $B$ bins, where $n_i$ and $m_i$ are the number of observed and synthetic stars in bin $i$, respectively. Each cluster was sampled until either $\epsilon \leq 0.01$, $\Delta \epsilon \leq 10^{-9}$, or 3000 iterations were reached.
+
+\subsection{\code{simul\_fit}}
