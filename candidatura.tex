@@ -1,6 +1,8 @@
 \section*{Abstract}
 The study of stellar clusters within the Galaxy serves an important role in understanding the Galaxy’s physical and chemical characteristics. Open stellar clusters are defined as gravitationally-bound groups of stars born from a single, homogeneous molecular cloud, typically composed of a single stellar population. This allows us to measure physical parameters such as a cluster’s age, metallicity, distance, and extinction, which can be determined through photometric data of resolved cluster members. Studies of Galactic clusters have seen a significant boon in recent years with the advent of Gaia, whose unmatched astrometric precision has allowed for the identification of thousands of new stellar clusters, as well as refining membership lists for previously identified clusters.
 
-\input{sections/introduction}
+This doctoral thesis project makes use of Gaia DR3 (and DR4 in the near future) data to update and expand the membership lists from the Hunt \& Reffert (2024) and the Unified Cluster Catalog (UCC). By using HDBSCAN we identify an additional population of faint stars for each cluster, extending beyond the main clusters’ cores. We determine each cluster’s physical parameters using both isochrone fitting methods such as ASteCA, as well as a neural network trained on observational Hertzsprung-Russell diagrams in various passbands (Gaia, 2MASS, WISE, SDSS), including Johnson-Cousins UBVRI passbands from observations made at the Observatorio Astronómico Universitario – San Pedro Martir. Multi-band observations, as well as the recovery of previously unreported faint (G > 18) members, will help us break degeneracies present in the parameter space responsible for parameter discrepancies across catalogs.
 
+\input{sections/introduction}
 \input{sections/membership}
+\input{sections/photometric-analysis.tex}
