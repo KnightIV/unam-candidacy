@@ -10,8 +10,15 @@
 \usepackage{indentfirst}
 
 \usepackage{tabularray}
+\usepackage{multirow}
 \usepackage{makecell}
+\usepackage{tablefootnote}
+% \usepackage{footnote}
 \UseTblrLibrary{booktabs}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
 
 \usepackage[style=apa,doi=false]{biblatex}
 \addbibresource{ref.bib}

@@ -2,7 +2,7 @@
 
 Using the membership list from the HDBSCAN pipeline, we performed a photometric analysis of each OC to determine their physical parameters: metallicity ($Z$; calculated using [Fe/H]), age ($\log{t}$), distance given as the distance modulus ($d_m$), visual extinction ($A_V$), and Galactic extinction curve ($R_V$). This was done using each cluster's computed Gaia CMDs as a first approximation and fitting PARSEC theoretical isochrones \autocite{bressanPARSECStellarTracks2012}, where the fit was done using two different approaches to explore the existing tooling available in the literature.
 
-\subsection{ASteCA}
+\subsection{ASteCA} \label{sec:asteca}
 
 The \textit{Automated Stellar Cluster Analysis} (ASteCA) package \autocite{perrenASteCAAutomatedStellar2015b} is an open-source package for cluster analysis. ASteCA is organized into several modules for handling cluster membership probabilities, isochrone handling, synthetic cluster generation from theoretical isochrones, observation calibrations for comparing synthetic clusters with real observations, and likelihood calculations for comparing synthetic CMDs with a synthetic cluster's CMD. Since each clusters' stellar members were already determined from the HDBSCAN pipeline, we only made use of the \code{Synthetic} module to generate synthetic clusters calibrated on the Gaia member observations. 
 
@@ -16,15 +16,15 @@ In addition to the main intrinsic parameters that dictate the general shape of a
 
 \subsubsection{ABC Sampling}
 
-Parameter inference with \code{pyABC} was performed by sampling from a uniform distribution for all cluster intrinsic and extrinsic parameters. Parameter ranges can be seen in Table \ref{tab:pyabc-prior-ranges}. Although this imposes an initial restriction on the parameter space initially explored by \code{pyABC}, these are not hard limits, as proposal parameter vectors carry the sampler beyond the limits defined by the prior distributions \autocite{sissonSequentialMonteCarlo2007}.
+Parameter inference with \code{pyABC} was performed by sampling from a uniform distribution for all cluster intrinsic and extrinsic parameters. Parameter ranges can be seen in Table \ref{tab:pyabc-prior-ranges}. Although this imposes an initial restriction on the parameter space initially explored by \code{pyABC}, these are not hard limits, as proposal parameter vectors carry the sampler beyond the limits defined by the prior distributions \autocite{sissonSequentialMonteCarlo2007a}.
 
 \begin{table}[!ht]
     \centering
     \begin{tabular}{c c c}
-        \hline \hline
+        \toprule
         \thead{\textbf{Parameter}} & \thead{\textbf{Minimum}} & \thead{\textbf{Maximum}} \\
         
-        \hline
+        \midrule
 
         $\log{t}$ & 7.0 & 9.5 \\
         $Z$ & 0.005 & 0.0197 \\
@@ -35,7 +35,7 @@ Parameter inference with \code{pyABC} was performed by sampling from a uniform d
         $\beta$ & 0.8 & 0.99 \\
         $E(B - V)$ & 0 & 4.0 \\
 
-        \hline
+        \toprule
     \end{tabular}
     \caption{Prior parameter sample ranges.}
     \label{tab:pyabc-prior-ranges}
@@ -50,3 +50,74 @@ The logarithmic Poisson likelihood ratio (PLR) ($\log{p}$) defined within ASteCA
 The PLR is calculated on a 2D histogram of the Gaia DR3 CMD composed of $B$ bins, where $n_i$ and $m_i$ are the number of observed and synthetic stars in bin $i$, respectively. Each cluster was sampled until either $\epsilon \leq 0.01$, $\Delta \epsilon \leq 10^{-9}$, or 3000 iterations were reached.
 
 \subsection{\code{simul\_fit}}
+
+As an additional point of comparison, each cluster's Gaia CMD was also processed using \code{simul\_fit} \autocite{speletrySpeletrySimul_fitpySimul_fit2026} to simultaneously fit theoretical PARSEC isochrones to the cluster Gaia CMDs using a $\chi^2$ optimization technique in a Bayesian grid-based sampling scheme \autocite{alCCDPhotometryOpen2026}, where $\chi^2$ is the sum of the distances of each cluster member from the nearest point on the isochrone. The $\log{t}$, $A_V$, and $d_m$ parameter ranges for the sample grid were obtained from the HR24 catalog, taking $R_V = 3.1$. Figure \ref{fig:ngc-2506-corner} shows the sampling results for NGC\_2506, showing an estimation of the posterior distribution function.
+
+% TODO: maybe add the other clusters corner plots in an appendix?
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/NGC_2506_gaia_corner.png}
+    \caption{Corner plot for NGC\_2506 from the weighted sampling done by \code{simul\_fit} from the parameter grid exploration. \code{simul\_fit} assigns a likelihood weight of $P \propto -\Delta\chi^2 / 2$ to each sample. The median is marked by the blue line, followed by the 16th and 84th percentile uncertainties.}
+    \label{fig:ngc-2506-corner}
+\end{figure}
+
+\subsection{CMD analysis}
+
+We compare the parameters obtained from both ASteCA and \code{simul\_fit} with the reported parameters in the literature, as well as with a visual isochrone fit performed on the members' Gaia DR3, Johnson-Cousins \textit{UBVRI}, Str\"{o}mgren \textit{ubv}, and Pan-STARRS \textit{gri} observations. A detailed report with each cluster's fundamental parameters can be seen in Table \ref{tab:param-comparison}. The resulting CMDs with overlaid isochrone sequences can be seen in Figure \ref{fig:gaia-cmd-comparison}, where the parameters determined in this work result in an appreciably better fit to the observed data.
+
+{\renewcommand{\arraystretch}{1.2}% for the vertical padding
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{c c c c c c}
+        \toprule
+        \thead{\textbf{Cluster}} & \thead{\textbf{Parameter}} & \thead{\textbf{UCC}} & \thead{\textbf{HR24}} & \thead{\textbf{ASteCA}} & \thead{\textbf{\code{simul\_fit}}} \\
+        \midrule
+        \multirow{4}*{NGC 1245}
+& $\log{t}$ & $9.0298$ & $8.9914^{+0.1659}_{-0.1839}$ & $9.0896 \pm 0.5626$ & $8.9000^{+8.9}_{-8.9000}$ \\
+& $Z$ & $0.0181$ & $0.0207$ ($Z_{\odot}$) & $0.0153 \pm 0.0031$ & $0.0191^{+0.0191}_{-0.0191}$ \\
+& $d_m$ & $12.3856$ & $12.6432^{+0.2072}_{-0.1601}$ & $12.3966 \pm 0.7244$ & $12.6725^{+12.6721}_{-12.6721}$ \\
+& $E (B - V)$ & $-0.0272$ & $0.1757^{+0.0574}_{-0.0566}$ & $2.1026 \pm 1.1672$ & $0.3294^{+0.3294}_{-0.3294}$ \\
+        \midrule
+        \multirow{4}*{NGC 2311}
+& $\log{t}$ & $8.3010$ & $7.9845^{+0.2190}_{-0.1901}$ & $8.3497 \pm 0.6713$ & $7.5000^{+7.5}_{-7.5000}$ \\
+& $Z$ & $0.0179$ & $0.0207$ ($Z_{\odot}$) & $0.0154 \pm 0.0044$ & $0.0208^{+0.0208}_{-0.0208}$ \\
+& $d_m$ & $11.5799$ & $11.5365^{+0.1470}_{-0.1616}$ & $11.5886 \pm 0.8691$ & $11.9335^{+11.9333}_{-11.9333}$ \\
+& $E (B - V)$ & $0.0305$ & $0.2726^{+0.0544}_{-0.0673}$ & $1.9979 \pm 1.1505$ & $0.4870^{+0.4868}_{-0.4868}$ \\
+        \midrule
+        \multirow{4}*{NGC 2420}
+& $\log{t}$ & $9.3049$ & $9.3523^{+0.1731}_{-0.1656}$ & $9.4016 \pm 0.6724$ & $9.4002^{+9.4}_{-9.4000}$ \\
+& $Z$ & $0.0130$ & $0.0207$ ($Z_{\odot}$) & $0.0102 \pm 0.0029$ & $0.0174^{+0.0174}_{-0.0174}$ \\
+& $d_m$ & $12.0327$ & $11.7873^{+0.2266}_{-0.1924}$ & $12.0648 \pm 0.7509$ & $11.9793^{+11.9800}_{-11.9800}$ \\
+& $E (B - V)$ & $0.0012$ & $0.0098^{+0.0121}_{-0.0098}$ & $2.0974 \pm 1.1330$ & $0.0001^{+0.0000}_{-0.0000}$ \\
+        \midrule
+        \multirow{4}*{NGC 2506}
+& $\log{t}$ & $9.2101$ & $9.3819^{+0.1623}_{-0.1647}$ & $9.3000 \pm 0.4787$ & $9.3000^{+9.3}_{-9.3000}$ \\
+& $Z$ & $0.0113$ & $0.0207$ ($Z_{\odot}$) & $0.0065 \pm 0.0027$ & $0.0101^{+0.0101}_{-0.0101}$ \\
+& $d_m$ & $12.5460$ & $12.5030^{+0.2218}_{-0.2199}$ & $12.5887 \pm 0.5474$ & $12.5388^{+12.5387}_{-12.5387}$ \\
+& $E (B - V)$ & $0.0030$ & $0.0104^{+0.0116}_{-0.0104}$ & $1.9323 \pm 1.1549$ & $0.0501^{+0.0500}_{-0.0500}$ \\
+        \toprule
+    \end{tabular}
+    \caption{Fundamental parameters for each cluster, comparing the literature values with the ASteCA and \code{simul\_fit} derived parameters.}
+    \label{tab:param-comparison}
+\end{table}
+}
+    
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.49\linewidth]{figures/NGC_1245_gaia_cmd_comparison.png}
+    \includegraphics[width=0.49\linewidth]{figures/NGC_2311_gaia_cmd_comparison.png}
+    \includegraphics[width=0.49\linewidth]{figures/NGC_2420_gaia_cmd_comparison.png}
+    \includegraphics[width=0.49\linewidth]{figures/NGC_2506_gaia_cmd_comparison.png}
+    \caption{Gaia CMDs for each of the four clusters analyzed in this work, showing the best fit PARSEC isochrones using the parameters reported in the literature (UCC, HR24), best fits from ASteCA and \code{simul\_fit}, and a visual isochrone fit using SPM observations.}
+    \label{fig:gaia-cmd-comparison}
+\end{figure}
+
+One of the main advantages of fitting synthetic clusters with ASteCA is the ability to consider the impact of binary systems on the cluster CMD; while the resulting ASteCA isochrone lies towards the blue edge of each of the main sequence, the binary probability of each star as reported by ASteCA reveals the extent that member binarity broadens the main sequence, as seen in Figure \ref{fig:binarity-probability}.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/NGC-2420-2506-1245-2311-binarity.png}
+    \caption{Gaia CMDs with the best fit ASteCA isochrone overlaid. The color map represents the probability of each member star of being an unresolved binary system, as derived from the $\alpha$ and $\beta$ parameters as described in Section \ref{sec:asteca}.}
+    \label{fig:binarity-probability}
+\end{figure}
