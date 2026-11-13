@@ -1,4 +1,4 @@
-\section{Membership Determination}
+\section{Membership Determination} \label{sec:membership}
 
 In order to properly characterize a SC, it's member stars must be properly identified to avoid including field stars not bound to the cluster in question for the ensuing CMD analysis. As a result, cluster membership determination algorithms have received a large amount of attention in recent years. For this project we implement a membership determination pipeline using HDBSCAN, an improvement over the DBSCAN clustering algorithm by assembling minimum spanning trees and subsequently compacting them into a set of "groupings," from which stellar clusters are identified. HDBSCAN has been used in recent works with a high rate of success in both identifying previously unknown SCs as well as expanding on known clusters' membership lists \autocite{huntImprovingOpenCluster2021,sanchez-sanjuanKinematicStudyOrion2024a,tarricqStructuralParameters3892022a}. 
 
