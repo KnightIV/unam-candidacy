@@ -9,15 +9,13 @@ Photometric studies of SCs involve fitting synthetic isochrones to color--magnit
 \subsection{Objectives}
 Although a variety of studies have been done using CMDs from other catalogs, few studies include observations in near-ultraviolet filters due to the demanding photometric conditions (as a result of atmospheric sensitivity) required to obtain reliable measurements for a cluster's metallicity and age. For this project, we will exploit over 20 years of UBVRI observations of over 1700 resolved Galactic clusters (both GCs and OCs), which can be used to provide reliable measurements of the clusters' fundamental parameters with stronger model constraints than is otherwise possible without UBV observations \autocite{kavirajBetterAgeEstimation2007}. The observations from the \textit{Observatorio Astron\'omico Nacional -- San Pedro M\'artir} (hereafter referred to as SPM) are complemented with photometry obtained from all-sky surveys when available, crossmatching the Gaia observations with GALEX, 2MASS, PAN-STARRS, SDSS, and WISE.
 
-% Although this has been a troublesome task in the past, the advent of Gaia\textemdash with the third data release (DR3) being the latest offering \autocite{gaiacollaborationGaiaDataRelease2023a}\textemdash has greatly improved membership determination through highly accurate astrometric parameters. 
-
 The project's key objectives are outlined as follows:
 
 \begin{itemize}
     \item Determine and expand on stellar cluster membership catalogs using high quality astrometric data, focusing on retrieving faint member stars that were otherwise discarded in previous studies.
     \item Implement existing tools for determining clusters' physical parameters based on cleaned CMDs using revised membership lists.
     \item Develop new tools for the efficient and accurate characterization of cluster CMDs.
-    \item Use newly developed tools for determining stellar and cluster parameters of SCs and SC candidates using observations from SPM, supplemented with observations from external catalogs: 2MASS, WISE, GALEX, Gaia, PAN-STARRS, and SDSS when available.
+    \item Use newly developed tools for determining fundamental and structural parameters of SCs and SC candidates using observations from SPM, supplemented with observations from external catalogs: 2MASS, WISE, GALEX, Gaia, PAN-STARRS, and SDSS when available.
 \end{itemize}
 
 \section{Catalog of Observations}
@@ -32,6 +30,8 @@ As can be seen in Figure \ref{fig:mw-distribution}, our observations encompass a
     \label{fig:mw-distribution}
 \end{figure}
 
-\subsection{Initial Sample}
+\subsection{Cluster Sample}
 
-As a first test of the membership determination pipeline and preliminary evaluation of the physical characterization of each OC's CMD, we selected four well-studied, well-populated clusters all located within a similar parallax range. 
+As a first test of the membership determination pipeline and preliminary evaluation of the physical characterization of each OC's CMD, we selected four well-studied, well-populated clusters all located within a similar parallax range: \textit{NGC 1245}, \textit{NGC 2311}, \textit{NGC 2420}, and \textit{NGC 2506}. An initial literature distance determination was reported for all but NGC 2311 \autocite{alterCatalogueStarClusters1970}, while subsequent studies have been made in an effort to understand each cluster's fundamental parameters \autocite{liMiMOCatalogPhysical2025,huntImprovingOpenCluster2024a,cavalloParameterEstimationOpen2023} and use them\textemdash as part of a larger sample of Galactic SCs\textemdash to understand and trace the Galactic structure \autocite{cantat-gaudinPaintingPortraitGalactic2020a,kharchenkoGlobalSurveyStar2016}.
+
+Due to the technical limitations of the cluster characterization tooling available at this time we opted to only use each cluster's Gaia DR3 observations, as this would have the most amount of information available and whose broadband passbands cover a portion of the UV spectrum, providing some sensitivity to metallic lines and thus increasing sensitivity to a cluster's global metallicity, albeit without the sensitivity a narrow-band passband might otherwise provide \autocite{paunzenCalibrationGaiaDR32026}.
